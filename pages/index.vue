@@ -1,7 +1,15 @@
 <template>
   <div>
     <div class="d-flex flex-wrap justify-content-center">
-      <!-- TODO: Integrate with cards component-->
+      <card
+        v-for="(anime, idx) in lists"
+        :key="idx"
+        :id="anime.id"
+        :title="anime.title.romaji"
+        :image="anime.coverImage.medium"
+        :genres="anime.genres"
+        class="mx-2 my-2"
+      />
     </div>
     <div
       :class="
