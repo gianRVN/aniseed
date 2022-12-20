@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   name: 'Card',
   props: {
@@ -26,16 +26,12 @@ export default {
     },
     genres: {
       type: Array,
-      default: '',
+      default: () => [],
     },
   },
   methods: {
     goToCardDetail() {
-<<<<<<< HEAD
       this.$router.push(`/anime/${this.id}`)
-=======
-      // this.$router.push(`/anime/${this.id}`)
->>>>>>> 588ad98 (fix(sync-up): update integration all page with details)
     },
   },
 }

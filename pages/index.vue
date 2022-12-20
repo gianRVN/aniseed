@@ -1,10 +1,24 @@
 <template>
   <div>
+    <div class="container m-5">
+      <b-dropdown text="Genres" variant="light">
+        <b-form-checkbox-group v-model="selectedGenre" class="dropdown-genre">
+          <b-form-checkbox
+            v-for="(genre, idx) in animeGenres"
+            :key="idx"
+            class="m-2"
+            :value="genre"
+          >
+            {{ genre }}
+          </b-form-checkbox>
+        </b-form-checkbox-group>
+      </b-dropdown>
+    </div>
     <div class="d-flex flex-wrap justify-content-center">
       <card
         v-for="(anime, idx) in lists"
-        :key="idx"
         :id="anime.id"
+        :key="idx"
         :title="anime.title.romaji"
         :image="anime.coverImage.medium"
         :genres="anime.genres"
@@ -12,12 +26,12 @@
       />
     </div>
     <div
+      v-show="loading"
       :class="
         lists.length === 0
           ? 'spinner-center'
           : 'd-flex justify-content-center m-5'
       "
-      v-show="loading"
     >
       <div class="spinner-border" role="status">
         <span class="sr-only" />
@@ -29,13 +43,28 @@
 <script>
 export default {
   name: 'Index',
-  async mounted() {
+  data() {
+    return {
+      loading: false,
+      lists: [],
+      animeGenres: [],
+      pagination: {},
+      selectedGenre: [],
+    }
+  },
+  watch: {
+    selectedGenre() {
+      this.lists = []
+      this.fetchNextAnime()
+    },
+  },
+  mounted() {
     window.onscroll = () => {
-      let bottomOfWindow =
+      const bottomOfWindow =
         document.documentElement.scrollTop + window.innerHeight >=
           document.documentElement.offsetHeight - 1 && !this.loading
 
-      if (bottomOfWindow) {
+      if (bottomOfWindow && this.pagination.hasNextPage) {
         setTimeout(() => {
           this.fetchNextAnime(
             this.prepareParams(this.pagination.currentPage + 1)
@@ -44,13 +73,7 @@ export default {
       }
     }
     this.fetchNextAnime()
-  },
-  data() {
-    return {
-      loading: false,
-      lists: [],
-      pagination: {},
-    }
+    this.fetchAnimeGenre()
   },
   methods: {
     async fetchNextAnime(params) {
@@ -64,11 +87,14 @@ export default {
       }
       this.loading = false
     },
-    prepareParams(page = 1, perPage = 25, genre) {
+    async fetchAnimeGenre() {
+      const res = await this.$fetchAnimeGenre()
+      this.animeGenres = res
+    },
+    prepareParams(page = 1) {
       return {
         page,
-        perPage,
-        genre,
+        genre_in: this.selectedGenre,
       }
     },
   },
@@ -81,5 +107,10 @@ export default {
   left: 50%;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.dropdown-genre {
+  max-height: 280px;
+  overflow-y: auto;
 }
 </style>
