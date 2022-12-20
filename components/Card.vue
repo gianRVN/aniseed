@@ -31,7 +31,11 @@ export default {
   },
   methods: {
     goToCardDetail() {
+<<<<<<< HEAD
       this.$router.push(`/anime/${this.id}`)
+=======
+      // this.$router.push(`/anime/${this.id}`)
+>>>>>>> 588ad98 (fix(sync-up): update integration all page with details)
     },
   },
 }
