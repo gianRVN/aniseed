@@ -22,12 +22,12 @@
           @input="handleChangeSearch"
         />
       </div>
-      <div class="my-2" v-if="selectedGenre.length > 0">
+      <div v-if="selectedGenre.length > 0" class="my-2">
         <b-icon-tags-fill variant="secondary" />
         <b-badge
-          type="button"
           v-for="(genre, idx) in selectedGenre"
           :key="idx"
+          type="button"
           pill
           variant="warning"
           class="mx-1"
@@ -51,18 +51,11 @@
         class="mx-1 my-3"
       />
     </div>
-    <div
-      v-show="loading"
-      :class="
-        lists.length === 0
-          ? 'spinner-center'
-          : 'd-flex justify-content-center m-5'
-      "
-    >
-      <div class="spinner-border" v-if="pagination.hasNextPage" role="status">
-        <span class="sr-only" />
-      </div>
-    </div>
+    <spinner
+      :loading="loading"
+      :pagination-loading="pagination.hasNextPage"
+      :is-centered="lists.length === 0"
+    />
   </div>
 </template>
 
