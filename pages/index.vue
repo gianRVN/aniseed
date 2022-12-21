@@ -125,12 +125,29 @@ export default {
           this.lists = [...this.lists, data]
         })
         this.pagination = res.pageInfo
+      } else {
+        this.$bvToast.toast('Error fetch anime list', {
+          title: 'Error',
+          variant: 'danger',
+          toaster: 'b-toaster-top-center',
+          solid: true,
+        })
       }
+
       this.loading = false
     },
     async fetchAnimeGenre() {
       const res = await this.$fetchAnimeGenre()
-      this.animeGenres = [...res]
+      if (res?.error) {
+        this.$bvToast.toast('Error fetch anime list', {
+          title: 'Error',
+          variant: 'danger',
+          toaster: 'b-toaster-top-center',
+          solid: true,
+        })
+      } else {
+        this.animeGenres = [...res]
+      }
     },
     removeGenre(val) {
       this.selectedGenre = this.selectedGenre.filter((genre) => genre !== val)

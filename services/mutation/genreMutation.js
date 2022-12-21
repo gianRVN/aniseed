@@ -16,6 +16,6 @@ export const fetchAnimeGenre = async () => {
 
     return GenreCollection
   } catch (err) {
-    console.log(err) // eslint-disable-line
+    return { err } // eslint-disable-line
   }
 }
