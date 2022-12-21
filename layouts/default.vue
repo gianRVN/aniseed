@@ -1,5 +1,11 @@
 <template>
   <div>
+    <b-alert show variant="warning" v-if="$nuxt.isOffline">
+      <b-icon-exclamation-triangle />
+      <span class="pl-2">
+        You are Offline! Please check your internet connection!
+      </span>
+    </b-alert>
     <Nuxt />
   </div>
 </template>

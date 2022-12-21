@@ -29,14 +29,14 @@
       />
     </div>
     <div
-      v-if="loading && pagination.hasNextPage"
+      v-show="loading"
       :class="
         lists.length === 0
           ? 'spinner-center'
           : 'd-flex justify-content-center m-5'
       "
     >
-      <div class="spinner-border" role="status">
+      <div class="spinner-border" v-if="pagination.hasNextPage" role="status">
         <span class="sr-only" />
       </div>
     </div>
@@ -48,7 +48,7 @@ export default {
   name: 'Index',
   data() {
     return {
-      loading: true,
+      loading: false,
       lists: [],
       animeGenres: [],
       pagination: {
@@ -57,12 +57,6 @@ export default {
       },
       selectedGenre: [],
     }
-  },
-  watch: {
-    selectedGenre() {
-      this.resetState()
-      this.fetchNextAnime()
-    },
   },
   computed: {
     prepareParams() {
@@ -73,6 +67,12 @@ export default {
       if (this.selectedGenre.length !== 0) params.genre_in = this.selectedGenre
 
       return params
+    },
+  },
+  watch: {
+    selectedGenre() {
+      this.resetState()
+      this.fetchNextAnime()
     },
   },
   mounted() {
@@ -96,9 +96,9 @@ export default {
       }
     },
     async fetchNextAnime() {
+      this.loading = true
       const res = await this.$fetchAnimeList(this.prepareParams)
       if (res?.media) {
-        console.log('ini kenapa')
         res.media.forEach((data) => {
           this.lists = [...this.lists, data]
         })
