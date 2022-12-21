@@ -1,5 +1,6 @@
 <template>
   <div>
+    <navbar />
     <b-alert show variant="warning" v-if="$nuxt.isOffline">
       <b-icon-exclamation-triangle />
       <span class="pl-2">
@@ -23,13 +24,9 @@ html {
   box-sizing: border-box;
 }
 
-/* body {
-  background: linear-gradient(
-    177.9deg,
-    rgb(25, 26, 33) 3.6%,
-    rgb(54, 57, 62) 105.8%
-  );
-} */
+body {
+  background-color: whitesmoke;
+}
 
 *,
 *::before,

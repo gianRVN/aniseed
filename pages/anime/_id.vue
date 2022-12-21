@@ -1,13 +1,6 @@
 <template>
   <div>
-    <div
-      v-if="loading"
-      :class="
-        animeInfo.length === 0
-          ? 'spinner-center'
-          : 'd-flex justify-content-center m-5'
-      "
-    >
+    <div v-if="loading" class="spinner-center">
       <div class="spinner-border" role="status">
         <span class="sr-only" />
       </div>
@@ -18,55 +11,52 @@
         alt="anime banner"
         class="image-banner"
       />
-      <div class="anime-container">
-        <h1 class="text-white">{{ animeInfo.title.romaji }}</h1>
-
-        <b-badge
-          v-for="(genre, idx) in animeInfo.genres"
-          :key="idx"
-          variant="light"
-          class="mx-1"
-        >
-          {{ genre }}
-        </b-badge>
-
-        <div class="d-flex align-items-center my-2 mx-2">
-          <b-icon-eye-fill variant="light" />
-          <div class="text-white ml-1">
-            {{ animeInfo.popularity.toLocaleString() }}
-          </div>
-          <b-icon-hand-thumbs-up-fill class="ml-3" variant="light" />
-          <div class="text-white ml-1">
-            {{ animeInfo.averageScore }}
-          </div>
-          <button
-            type="button"
-            class="btn btn-primary btn-sm ml-3"
-            @click="bookmarkAnime"
-          >
-            <b-icon-bookmark-fill
-              class="ml-3"
+      <div class="anime-container row">
+        <div class="col-4">
+          <b-card>
+            <h1>{{ animeInfo.title.romaji }}</h1>
+            <b-badge
+              v-for="(genre, idx) in animeInfo.genres"
+              :key="idx"
               variant="light"
-              v-if="isBookmarked"
+              class="mx-1"
+            >
+              {{ genre }}
+            </b-badge>
+            <div class="d-flex align-items-center my-2 mx-2">
+              <b-icon-eye-fill variant="dark" />
+              <div class="ml-1">
+                {{ animeInfo.popularity.toLocaleString() }}
+              </div>
+              <b-icon-hand-thumbs-up-fill class="ml-3" variant="dark" />
+              <div class="ml-1">
+                {{ animeInfo.averageScore }}
+              </div>
+              <b-button
+                size="sm"
+                class="ml-3"
+                variant="warning"
+                @click="bookmarkAnime"
+              >
+                <b-icon-bookmark-fill variant="light" v-if="isBookmarked" />
+                <b-icon-bookmark v-else />
+                Bookmark</b-button
+              >
+            </div>
+            <img
+              class="card-img-top mt-3"
+              :src="animeInfo.coverImage.medium"
+              alt="Card image cap"
             />
-            <b-icon-bookmark class="ml-3" v-else />
-            Bookmark
-          </button>
+          </b-card>
         </div>
-
-        <div class="mt-5 pt-5">
-          <h3>Description</h3>
-          <button
-            type="button"
-            class="btn btn-primary btn-sm ml-3"
-            @click="$router.push('/bookmark')"
-          >
-            GO TO BOOKMARK
-          </button>
-          <p>{{ animeInfo.description }}</p>
+        <div class="col-8">
+          <div class="anime-description">
+            <h3>Description</h3>
+            <p v-html="animeInfo.description" />
+          </div>
         </div>
       </div>
-      <div>{{ JSON.stringify(animeInfo) }}</div>
     </template>
   </div>
 </template>
@@ -128,5 +118,15 @@ export default {
   height: 25vw;
   width: 100%;
   object-fit: cover;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 25vw;
+  object-fit: cover;
+}
+
+.anime-description {
+  margin-top: 12vw;
 }
 </style>
