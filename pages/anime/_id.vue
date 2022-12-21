@@ -14,7 +14,7 @@
       <div class="anime-container row">
         <div class="col-4">
           <b-card>
-            <h1>{{ animeInfo.title.romaji }}</h1>
+            <!-- <h1>{{ animeInfo.title.romaji }}</h1> -->
             <b-badge
               v-for="(genre, idx) in animeInfo.genres"
               :key="idx"
@@ -38,7 +38,7 @@
                 variant="warning"
                 @click="bookmarkAnime"
               >
-                <b-icon-bookmark-fill variant="light" v-if="isBookmarked" />
+                <b-icon-bookmark-fill v-if="isBookmarked" variant="light" />
                 <b-icon-bookmark v-else />
                 Bookmark</b-button
               >
