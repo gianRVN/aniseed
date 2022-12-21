@@ -2,40 +2,39 @@ const BASE_URL = 'https://graphql.anilist.co'
 const PER_PAGE = 25
 
 const query = `
-  query ($id: Int, $page: Int, $perPage: Int, $genre: String) {
-    Page (page: $page, perPage: $perPage) {
-      pageInfo {
-        total
-        currentPage
-        lastPage
-        hasNextPage
-        perPage
+query ($id: Int, $page: Int, $perPage: Int, $genre_in: [String], $sort:[MediaSort] = [POPULARITY_DESC, SCORE_DESC]) {
+  Page (page: $page, perPage: $perPage) {
+    pageInfo {
+      total
+      currentPage
+      lastPage
+      hasNextPage
+      perPage
+    }
+    media (id: $id, genre_in: $genre_in, sort: $sort) {
+      id
+      title {
+        romaji
       }
-      media (id: $id, genre: $genre) {
-        id
-        title {
-          romaji
-        }
-        coverImage {
-          extraLarge
-          large
-          medium
-          color
-        }
-        bannerImage
-        description
-        format
-        episodes
-        duration
-        chapters
-        volumes
-        genres
-        popularity
-        averageScore
+      coverImage {
+        extraLarge
+        large
+        medium
+        color
       }
+      bannerImage
+      description
+      format
+      episodes
+      duration
+      chapters
+      volumes
+      genres
+      popularity
+      averageScore
     }
   }
-  `
+}`
 
 const defaultVariables = {
   page: 1,
@@ -44,6 +43,7 @@ const defaultVariables = {
 
 const fetchAnimeList = async (variables) => {
   try {
+    console.log(variables, 'check')
     const response = await fetch(BASE_URL, {
       method: 'POST',
       headers: {

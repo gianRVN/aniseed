@@ -39,10 +39,30 @@
           <div class="text-white ml-1">
             {{ animeInfo.averageScore }}
           </div>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm ml-3"
+            @click="bookmarkAnime"
+          >
+            <b-icon-bookmark-fill
+              class="ml-3"
+              variant="light"
+              v-if="isBookmarked"
+            />
+            <b-icon-bookmark class="ml-3" v-else />
+            Bookmark
+          </button>
         </div>
 
         <div class="mt-5 pt-5">
           <h3>Description</h3>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm ml-3"
+            @click="$router.push('/bookmark')"
+          >
+            GO TO BOOKMARK
+          </button>
           <p>{{ animeInfo.description }}</p>
         </div>
       </div>
@@ -52,6 +72,8 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
+
 export default {
   name: 'AnimeDetails',
   data() {
@@ -60,16 +82,29 @@ export default {
       animeInfo: {},
     }
   },
+  computed: {
+    ...mapState('anime', ['bookmarkedAnime']),
+    isBookmarked() {
+      return this.bookmarkedAnime?.some(
+        (anime) => anime.id === this.animeInfo.id
+      )
+    },
+  },
   mounted() {
     this.fetchNextAnime()
   },
   methods: {
+    ...mapActions('anime', ['addBookmarkAnime', 'deleteBookmarkAnime']),
     async fetchNextAnime() {
       const res = await this.$fetchAnimeList({ id: this.$route.params.id })
 
       if (res?.media) this.animeInfo = res.media[0]
 
       this.loading = false
+    },
+    bookmarkAnime() {
+      if (this.isBookmarked) this.deleteBookmarkAnime(this.animeInfo)
+      else this.addBookmarkAnime(this.animeInfo)
     },
   },
 }

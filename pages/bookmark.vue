@@ -1,25 +1,8 @@
 <template>
   <div>
-    <div class="container m-5">
-      <b-dropdown text="Genres" variant="light">
-        <b-form-checkbox-group v-model="selectedGenre" class="dropdown-genre">
-          <b-form-checkbox
-            v-for="(genre, idx) in animeGenres"
-            :key="idx"
-            class="m-2"
-            :value="genre"
-          >
-            {{ genre }}
-          </b-form-checkbox>
-        </b-form-checkbox-group>
-      </b-dropdown>
-      <div class="my-2">
-        <b-icon-tags-fill variant="primary" />
-      </div>
-    </div>
     <div class="d-flex flex-wrap justify-content-center">
       <card
-        v-for="(anime, idx) in lists"
+        v-for="(anime, idx) in bookmarkedAnime"
         :id="anime.id"
         :key="idx"
         :title="anime.title.romaji"
@@ -44,6 +27,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'Index',
   data() {
@@ -65,6 +50,7 @@ export default {
     },
   },
   computed: {
+    ...mapState('anime', ['bookmarkedAnime']),
     prepareParams() {
       const params = {
         page: this.pagination.currentPage,

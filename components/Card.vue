@@ -1,5 +1,5 @@
 <template>
-  <div class="card" style="width: 12vw" @click="goToCardDetail">
+  <div class="card" style="width: 15vw" @click="goToCardDetail">
     <img class="card-img-top" :src="image" alt="Card image cap" />
     <h6 class="mt-2">{{ title }}</h6>
     <p>
@@ -40,7 +40,7 @@ export default {
 <style>
 .card-img-top {
   width: 100%;
-  height: 17vw;
+  height: 20vw;
   object-fit: cover;
 }
 </style>
