@@ -17,7 +17,7 @@ query ($id: Int, $page: Int, $perPage: Int, $genre_in: [String], $search: String
         medium
       }
       bannerImage
-      # description
+      description
       startDate {
         year
         month

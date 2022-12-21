@@ -1,8 +1,18 @@
 <template>
   <div class="card p-2" style="width: 14vw" @click="goToCardDetail">
     <img class="card-img-top" :src="image" alt="Card image cap" />
-    <h6 class="mt-2 mb-0">{{ title }}</h6>
-    <small> {{ episodes }}episode | {{ duration }}minutes </small>
+    <h6 class="card-title mt-2 mb-0">{{ title }}</h6>
+    <small class="card-description">
+      {{ episodes }}episodes | {{ duration }}minutes
+    </small>
+    <b-button
+      v-if="action"
+      size="sm"
+      variant="danger"
+      class="action-button"
+      @click="$emit('action')"
+      >{{ action }}</b-button
+    >
   </div>
 </template>
 
@@ -33,6 +43,10 @@ export default {
     duration: {
       type: Number,
       default: 0,
+    },
+    action: {
+      type: String,
+      default: '',
     },
   },
   methods: {
