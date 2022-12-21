@@ -1,4 +1,4 @@
-# aniseed
+# Aniseed
 
 ## Build Setup
 
