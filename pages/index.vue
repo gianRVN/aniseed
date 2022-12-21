@@ -1,23 +1,44 @@
 <template>
-  <div>
-    <div class="container m-5">
-      <b-dropdown text="Genres" variant="light">
-        <b-form-checkbox-group v-model="selectedGenre" class="dropdown-genre">
-          <b-form-checkbox
-            v-for="(genre, idx) in animeGenres"
-            :key="idx"
-            class="m-2"
-            :value="genre"
-          >
-            {{ genre }}
-          </b-form-checkbox>
-        </b-form-checkbox-group>
-      </b-dropdown>
-      <div class="my-2">
-        <b-icon-tags-fill variant="primary" />
+  <div class="index container">
+    <div class="m-3">
+      <div class="filter d-flex justify-content-between">
+        <b-dropdown text="Genres" variant="light">
+          <b-form-checkbox-group v-model="selectedGenre" class="dropdown-genre">
+            <b-form-checkbox
+              v-for="(genre, idx) in animeGenres"
+              :key="idx"
+              class="m-2"
+              :value="genre"
+            >
+              {{ genre }}
+            </b-form-checkbox>
+          </b-form-checkbox-group>
+        </b-dropdown>
+        <b-form-input
+          id="search-anime"
+          class="w-25"
+          type="search"
+          placeholder="search anime..."
+          @input="handleChangeSearch"
+        />
       </div>
+      <div class="my-2" v-if="selectedGenre.length > 0">
+        <b-icon-tags-fill variant="secondary" />
+        <b-badge
+          type="button"
+          v-for="(genre, idx) in selectedGenre"
+          :key="idx"
+          pill
+          variant="warning"
+          class="mx-1"
+          @click="removeGenre(genre)"
+        >
+          {{ genre }} X
+        </b-badge>
+      </div>
+      <hr />
     </div>
-    <div class="d-flex flex-wrap justify-content-center">
+    <div class="anime-cards d-flex flex-wrap justify-content-center">
       <card
         v-for="(anime, idx) in lists"
         :id="anime.id"
@@ -25,7 +46,9 @@
         :title="anime.title.romaji"
         :image="anime.coverImage.medium"
         :genres="anime.genres"
-        class="mx-2 my-2"
+        :episodes="anime.episodes"
+        :duration="anime.duration"
+        class="mx-1 my-3"
       />
     </div>
     <div
@@ -56,6 +79,7 @@ export default {
         hasNextPage: true,
       },
       selectedGenre: [],
+      search: '',
     }
   },
   computed: {
@@ -65,12 +89,17 @@ export default {
       }
 
       if (this.selectedGenre.length !== 0) params.genre_in = this.selectedGenre
+      if (this.search) params.search = this.search
 
       return params
     },
   },
   watch: {
     selectedGenre() {
+      this.resetState()
+      this.fetchNextAnime()
+    },
+    search() {
       this.resetState()
       this.fetchNextAnime()
     },
@@ -109,6 +138,12 @@ export default {
     async fetchAnimeGenre() {
       const res = await this.$fetchAnimeGenre()
       this.animeGenres = [...res]
+    },
+    removeGenre(val) {
+      this.selectedGenre = this.selectedGenre.filter((genre) => genre !== val)
+    },
+    handleChangeSearch(val) {
+      this.search = val
     },
     resetState() {
       this.lists = []

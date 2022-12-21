@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div>{{ JSON.stringify(bookmarkedAnime) }}a</div>
     <div class="d-flex flex-wrap justify-content-center">
       <card
         v-for="(anime, idx) in bookmarkedAnime"
@@ -8,7 +9,10 @@
         :title="anime.title.romaji"
         :image="anime.coverImage.medium"
         :genres="anime.genres"
-        class="mx-2 my-2"
+        :format="anime.format"
+        :episodes="anime.episodes"
+        :duration="anime.duration"
+        class="mx-2 my-3"
       />
     </div>
     <div
