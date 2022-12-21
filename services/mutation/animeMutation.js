@@ -18,6 +18,6 @@ export const fetchAnimeList = async (variables) => {
 
     return Page
   } catch (err) {
-    console.log(err) // eslint-disable-line
+    return { err } // eslint-disable-line
   }
 }

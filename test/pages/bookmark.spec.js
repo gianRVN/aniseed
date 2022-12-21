@@ -1,5 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils'
-import { Store } from 'vuex'
+import Vuex from 'vuex'
 import { BootstrapVue } from 'bootstrap-vue'
 import Bookmark from '@/pages/bookmark'
 import Card from '@/components/Card'
@@ -30,7 +30,7 @@ const mockAnime = [
   },
 ]
 
-const store = new Store({
+const store = new Vuex.Store({
   modules: {
     anime: {
       namespaced: true,
